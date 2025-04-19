@@ -1,36 +1,36 @@
 server:
-  port: 8080
+  port: ${SERVER_PORT}
 spring:
   application:
-    name: "ms-arithmetic-calculator"
+    name: ${SPRING_APPLICATION_NAME}
   devtools:
     add-properties: false
   profiles:
-    include: null
+    include: ${SPRING_PROFILES_INCLUDE}
   security:
     oauth2:
       resourceserver:
         jwt:
-          secret-key: "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"
+          secret-key: ${SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_SECRET_KEY}
   r2dbc:
-    url: r2dbc:postgresql://postgres.rdmrosepmquohufhiams:jdepaz2025@aws-0-us-east-2.pooler.supabase.com:5432/postgres
-    username: postgres.rdmrosepmquohufhiams
-    password: jdepaz2025
-    host: aws-0-us-east-2.pooler.supabase.com
-    port: 5432
-    database: postgres
+    url: "r2dbc:postgresql://${R2DBC_HOST}:${R2DBC_PORT}/${R2DBC_DATABASE}"
+    username: ${R2DBC_USERNAME}
+    password: ${R2DBC_PASSWORD}
+    host: ${R2DBC_HOST}
+    port: ${R2DBC_PORT}
+    database: ${R2DBC_DATABASE}
     pool:
       enabled: false
   flyway:
     enabled: true
-    url: jdbc:postgresql://aws-0-us-east-2.pooler.supabase.com:5432/postgres # URL JDBC
-    user: postgres.rdmrosepmquohufhiams # Mismo usuario que R2DBC
-    password: jdepaz2025
+    url: "jdbc:postgresql://${FLYWAY_HOST}:${FLYWAY_PORT}/${FLYWAY_DATABASE}"
+    user: ${FLYWAY_USER}
+    password: ${FLYWAY_PASSWORD}
     locations: classpath:db/migration
     baseline-on-migrate: true
     driver: org.postgresql.Driver
 jwt:
-  json-exp-roles: "/roles"
+  json-exp-roles: ${JWT_JSON_EXP_ROLES:/roles}
 management:
   endpoints:
     web:
@@ -41,4 +41,4 @@ management:
       probes:
         enabled: true
 cors:
-  allowed-origins: "http://localhost:4200,http://localhost:8080"
+  allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:4200,http://localhost:8080}
