@@ -20,3 +20,5 @@ include ':metrics'
 project(':metrics').projectDir = file('./infrastructure/helpers/metrics')
 include ':r2dbc-postgresql'
 project(':r2dbc-postgresql').projectDir = file('./infrastructure/driven-adapters/r2dbc-postgresql')
+include ':authenticator'
+project(':authenticator').projectDir = file('./infrastructure/helpers/authenticator')

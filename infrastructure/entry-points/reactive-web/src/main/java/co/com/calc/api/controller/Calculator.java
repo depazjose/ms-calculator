@@ -32,14 +32,9 @@ public class Calculator {
             @Valid @RequestBody CalculationRequest request,
             Mono<Authentication> authenticationMono
     ) {
-        authenticationMono
-                .subscribe(v -> System.out.println(v.toString()));
 
         return authenticationMono
-                .map(auth -> {
-                    System.out.println(auth.getName());
-                   return UUID.fromString(auth.getName());
-                })
+                .map(auth -> UUID.fromString(auth.getName()))
                 .flatMap(userId -> calculate(userId, request.getOperation(), request.getOperandA(), request.getOperandB()))
                 .map(operation -> new CalculationResponse(
                         operation.getId(),

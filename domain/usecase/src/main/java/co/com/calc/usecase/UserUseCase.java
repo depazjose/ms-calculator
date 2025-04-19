@@ -4,6 +4,8 @@ import co.com.calc.model.User;
 import co.com.calc.model.gateway.UserRepository;
 import co.com.calc.usecase.exception.UserAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import reactor.core.publisher.Mono;
 
@@ -13,6 +15,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserUseCase {
     private final UserRepository userRepository;
+    private final Logger logger = LoggerFactory.getLogger(UserUseCase.class);
 
     public Mono<User> register(String username, String password, String email) {
         return userRepository.findByUsername(username)
@@ -25,7 +28,8 @@ public class UserUseCase {
                             user.setPassword(encodePassword(password));
                             user.setEmail(email);
                             user.setCreatedAt(LocalDateTime.now());
-                            return userRepository.save(user);
+                            return userRepository.save(user)
+                                    .doOnError(e -> logger.error("Error saving user with username: {} and email: {}", username, email, e));
                         })));
     }
 
@@ -41,4 +45,5 @@ public class UserUseCase {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         return passwordEncoder.encode(password);
     }
+
 }

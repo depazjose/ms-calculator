@@ -34,7 +34,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.csrf;
 
 @WebFluxTest
-@ContextConfiguration(classes = {Calculator.class, CalculatorUseCase.class}) // If CalculatorUseCase has no external dependencies for this test
+@ContextConfiguration(classes = {Calculator.class, CalculatorUseCase.class})
 @Import(TestSecurityConfig.class)
 class CalculatorControllerTest {
 
@@ -57,7 +57,7 @@ class CalculatorControllerTest {
     @Test
     @WithMockUser(username = "a1b2c3d4-e5f6-7890-1234-567890abcdef", roles = "USER")
     void calculate_validRequest_returnsOkAndCalculationResponse() {
-        // Arrange
+
         CalculationRequest request = new CalculationRequest();
         request.setOperation(OperationType.ADDITION);
         request.setOperandA(5.0);
@@ -75,8 +75,8 @@ class CalculatorControllerTest {
         when(calculatorUseCase.calculate(testUserId, request.getOperation(), request.getOperandA(), request.getOperandB()))
                 .thenReturn(Mono.just(mockOperation));
 
-        // Act & Assert
-        webTestClient.mutateWith(csrf()) // If CSRF is enabled
+
+        webTestClient.mutateWith(csrf())
                 .post().uri("/api/calculate")
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(Mono.just(request), CalculationRequest.class)
@@ -101,7 +101,7 @@ class CalculatorControllerTest {
     @Test
     @WithMockUser(username = "a1b2c3d4-e5f6-7890-1234-567890abcdef", roles = "USER")
     void calculate_invalidOperation_returnsBadRequestAndCalculationResponseWithError() {
-        // Arrange
+
         CalculationRequest request = new CalculationRequest();
         request.setOperation(OperationType.DIVISION);
         request.setOperandA(10.0);
@@ -111,7 +111,7 @@ class CalculatorControllerTest {
         when(calculatorUseCase.calculate(eq(testUserId), eq(request.getOperation()), eq(request.getOperandA()), eq(request.getOperandB())))
                 .thenReturn(Mono.error(new InvalidOperationException(errorMessage)));
 
-        // Act & Assert
+
         webTestClient.mutateWith(csrf()) // If CSRF is enabled
                 .post().uri("/api/calculate")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -135,7 +135,7 @@ class CalculatorControllerTest {
     @Test
     @WithMockUser(username = "a1b2c3d4-e5f6-7890-1234-567890abcdef", roles = "USER")
     void calculate_internalServerError_returnsInternalServerErrorAndCalculationResponseWithError() {
-        // Arrange
+
         CalculationRequest request = new CalculationRequest();
         request.setOperation(OperationType.POWER);
         request.setOperandA(2.0);
@@ -145,7 +145,7 @@ class CalculatorControllerTest {
         when(calculatorUseCase.calculate(eq(testUserId), eq(request.getOperation()), eq(request.getOperandA()), eq(request.getOperandB())))
                 .thenReturn(Mono.error(new RuntimeException(errorMessage)));
 
-        // Act & Assert
+
         webTestClient.mutateWith(csrf()) // If CSRF is enabled
                 .post().uri("/api/calculate")
                 .contentType(MediaType.APPLICATION_JSON)

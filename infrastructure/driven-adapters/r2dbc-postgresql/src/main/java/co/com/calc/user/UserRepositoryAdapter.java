@@ -28,13 +28,36 @@ public class UserRepositoryAdapter extends ReactiveAdapterOperations<
 
     @Override
     public Mono<User> findByUsername(String username) {
-        return Mono.fromSupplier(() -> repository.findByusername(username))
-                .flatMap(Mono::just).map(this::toEntity);
+        return repository.findByUsername(username)
+                .flatMap(user -> {
+                    if (user != null) {
+                        return Mono.just(toEntity(user));
+                    } else {
+                        return Mono.empty(); // Retorna un Mono vacío si no se encuentra el usuario (null)
+                    }
+                } ) // Si el Optional está vacío, retorna un Mono vacío
+                .onErrorResume(throwable -> {
+                    System.err.println("Error al buscar usuario por nombre de usuario: " + username + " - " + throwable.getMessage());
+                    throwable.printStackTrace();
+                    // Aquí puedes decidir retornar un Mono vacío (Mono.empty()),
+                    // un Mono con un valor por defecto (Mono.just(defaultUser)),
+                    // o propagar una excepción específica (Mono.error(new CustomUserNotFoundException("Usuario no encontrado", throwable)));
+                    return Mono.empty(); // En este ejemplo, retornamos un Mono vacío
+                });
     }
 
     @Override
     public Mono<User> findByEmail(String email) {
-        return Mono.fromSupplier(() -> repository.findByEmail(email))
-                .flatMap(Mono::just).map(this::toEntity);
+        return repository.findByemail(email)
+                .flatMap(Mono::just)
+                .map(this::toEntity)
+                .onErrorResume(throwable -> {
+                    System.err.println("Error al buscar usuario por email de usuario: " + email + " - " + throwable.getMessage());
+                    throwable.printStackTrace();
+                    // Aquí puedes decidir retornar un Mono vacío (Mono.empty()),
+                    // un Mono con un valor por defecto (Mono.just(defaultUser)),
+                    // o propagar una excepción específica (Mono.error(new CustomUserNotFoundException("Usuario no encontrado", throwable)));
+                    return Mono.empty(); // En este ejemplo, retornamos un Mono vacío
+                });
     }
 }

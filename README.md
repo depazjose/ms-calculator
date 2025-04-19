@@ -1,4 +1,132 @@
-# Proyecto Base Implementando Clean Architecture
+# Microservicio para realizar operaciones aritméticas
+
+## Aspectos técnicos
+
+Nota: Para ejecutar el proyecto, se requiere la instalación del JDK 17.
+
+El servicio está construido con las siguientes características:
+
+- Java 17
+- Spring WebFlux
+- Spring Boot 3.4.4
+- Flyway (para realizar actualizaciones de base de datos)
+- Supabase (PostgreSQL 15)
+
+
+## Endpoints
+
+El servicio expone los siguientes endpoints:
+
+### Registro de usuarios
+
+```
+ POST http://localhost:8080/api/auth/register
+```
+Body
+```
+ {
+    "username": "jdepaz1",
+    "password": "jdepaz1",
+    "email": "josedepaz@gmail.com"
+}
+```
+
+cURL
+
+```bash
+  curl --location 'http://localhost:8080/api/auth/register' \
+  --header 'Content-Type: application/json' \
+  --data-raw '{
+  "username": "jdepaz2",
+  "password": "jdepaz2",
+  "email": "josedepaz2@gmail.com"
+  }'
+```
+
+### Autenticación de usuarios
+
+```
+ POST http://localhost:8080/api/auth/login
+```
+Body
+```
+{
+    "username": "jdepaz",
+    "password": "jdepaz"
+}
+```
+
+cURL
+
+```bash
+  curl --location 'http://localhost:8080/api/auth/login' \
+  --header 'Content-Type: application/json' \
+  --data '{
+      "username": "jdepaz2",
+      "password": "jdepaz2"
+  }'
+```
+Si el usuario se autentica correctamente, la respuesta contiene el TOKEN JWT para uso posterior, el cual tiene una vigencia de 1 hora:
+
+```
+ {
+  "token": "eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiXSwic3ViIjoiMTdhOGJiMmEtNzczZi00ODIwLTlkNGEtMGQ1NWRlYTEyM2ZmIiwiaWF0IjoxNzQ1MDA0NDQ4LCJleHAiOjE3NDUwMDgwNDh9.8es7l23QFh9V-fVe4k9cG414Vvn3FgELD6DhgdF8ITmdNikIzrtV6QqGRw45hl6QCHFtwU4XrGKJrZKwZMjC3Q"
+  }
+```
+
+### Realizar cálculos
+
+```
+ POST http://localhost:8080/api/calculate
+```
+Body
+```
+{
+    "operation": "DIVISION",
+    "operandA": 10.5,
+    "operandB": 0
+}
+```
+
+cURL
+
+  ```bash
+   curl --location 'http://localhost:8080/api/calculate' \
+   --header 'Content-Type: application/json' \
+   --header 'Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiXSwic3ViIjoiMmI5NTE1NmEtMTgzMi00ZTRlLTkyZGQtMDZlZTA5NTA2NzFhIiwiaWF0IjoxNzQ1MDI2MDgyLCJleHAiOjE3NDUwMjk2ODJ9.CR1y2ZyLbgmMvkouhkoG0ZUeRcnHuvdRI9pRjKY3Widb8kFFIeQB3jp60uKF6IaLOM0oEa7GZfxkT5XGvar9wg' \
+   --data '{
+    "operation": "ADDITION",
+    "operandA": 10.5,
+    "operandB": 5.0
+    }'
+  ```
+
+
+Respuesta:
+
+```
+{
+  "id": "c0bad022-3093-4f3f-86b3-ae067a84f062",
+  "operation": "DIVISION",
+  "operandA": 10.5,
+  "operandB": 5.0,
+  "result": 2.1,
+  "timestamp": "2025-04-18T18:00:42.761847157",
+  "userId": "17a8bb2a-773f-4820-9d4a-0d55dea123ff",
+  "error": null
+ }
+```
+
+# Flujo funcional
+
+
+1. Realizar el registro de un usuario  (**_Registro de usuarios_**)
+2. Autenticarse (login) con el usuario y password creado anteriormente (**_Autenticación de usuarios_**) 
+   - La autenticación devuelve un token, el cual se utilizará como "Bearer" 
+3. Realizar el cálculo (**_Realizar cálculos_**)
+
+
+# Arquitectura
 
 ## Antes de Iniciar
 

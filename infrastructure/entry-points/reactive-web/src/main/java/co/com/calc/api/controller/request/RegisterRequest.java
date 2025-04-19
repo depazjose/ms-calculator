@@ -3,9 +3,13 @@ package co.com.calc.api.controller.request;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class RegisterRequest {
 
     @NotEmpty(message = "El nombre de usuario no puede estar vacío")

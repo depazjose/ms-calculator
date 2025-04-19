@@ -5,9 +5,11 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,12 +20,12 @@ import java.util.stream.Collectors;
 @Component
 public class JwtUtil {
 
-    private static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60; // 5 horas
+    private static final long JWT_TOKEN_VALIDITY = 60 * 60 * 1000; // 5 horas
 
     private final Key secretKey;
 
-    public JwtUtil() {
-        secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512); // Genera una clave segura
+    public JwtUtil(@Value("${spring.security.oauth2.resourceserver.jwt.secret-key}") String jwtSecret) {
+        secretKey = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
     }
 
     public String getUsernameFromToken(String token) {

@@ -2,6 +2,7 @@ package co.com.calc.api.controller;
 
 import co.com.calc.api.controller.request.LoginRequest;
 import co.com.calc.api.controller.request.RegisterRequest;
+import co.com.calc.auth.AuthService;
 import co.com.calc.model.User;
 import co.com.calc.usecase.UserUseCase;
 import co.com.calc.usecase.exception.UserAlreadyExistsException;
@@ -23,6 +24,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AuthRegister {
     private final UserUseCase userUseCase;
+    private final AuthService authRegister;
 
     @PostMapping("/register")
     public Mono<ResponseEntity<User>> register(@Valid @RequestBody RegisterRequest request) {
@@ -48,7 +50,6 @@ public class AuthRegister {
     }
 
     public Mono<Map<String, String>> login(String username, String password) {
-        //return authService.login(username, password);
-        return Mono.just(Map.of("b", "ab"));
+        return authRegister.login(username, password);
     }
 }

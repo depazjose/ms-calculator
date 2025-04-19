@@ -22,7 +22,6 @@ public class CalculatorUseCase {
         BigDecimal operandBBigDecimal = operandB != null ? BigDecimal.valueOf(operandB) : null;
         BigDecimal result = null;
 
-        // Validaciones de rango
         if (operandABigDecimal.compareTo(new BigDecimal("-1000000")) < 0 || operandABigDecimal.compareTo(new BigDecimal("1000000")) > 0 ||
                 (operandBBigDecimal != null && (operandBBigDecimal.compareTo(new BigDecimal("-1000000")) < 0 || operandBBigDecimal.compareTo(new BigDecimal("1000000")) > 0))) {
             return Mono.error(new InvalidOperationException("Operands must be within the range of -1000000 to 1000000"));
